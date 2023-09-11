@@ -1,0 +1,34 @@
+@use '../../index.scss';
+
+.navigation {
+  display: none;
+  visibility: hidden;
+  
+  @include index.desktop {
+    visibility: visible;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 76%;
+    font-family: var(--montserrat);
+    font-size: 1.1rem;
+    row-gap: 9px;
+  }
+}
+
+.link {
+  text-align: center;
+  color: inherit;
+  text-decoration: none;
+
+  &_active {
+    color: var(--yellow);
+  }
+
+  &:hover {
+    color: var(--yellow);
+  }
+
+  &:active {
+    transform: scale(1.1);
+  }
+}

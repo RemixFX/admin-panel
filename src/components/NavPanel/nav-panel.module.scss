@@ -1,0 +1,29 @@
+@use '../../index.scss';
+
+.navigation {
+  width: 30px;
+  height: 30px;
+
+  @include index.desktop {
+    visibility: hidden;
+    display: none;
+  }
+}
+
+.container {
+  position: absolute;
+  top: 25%;
+  left: 3%;
+  width: inherit;
+  height: inherit;
+}
+
+.list {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  max-width: var(--mobile-width);
+  height: 100vh;
+  overflow: hidden;
+}

@@ -1,0 +1,39 @@
+@use '../../index.scss';
+
+.header, .container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: center
+}
+
+.container {
+  @include index.desktop {
+    width: 24%;
+    flex-direction: column;
+  }
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  padding: 13px;
+  background: #000;
+  z-index: 3;
+
+  @include index.desktop {
+    background: #19181eeb;
+  }
+}
+
+.title {
+  font-size: 1.2rem;
+  margin: 0;
+  display: block;
+
+  @include index.desktop {
+    display: none;
+  }
+}

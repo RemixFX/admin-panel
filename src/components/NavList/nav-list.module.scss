@@ -1,0 +1,51 @@
+.container {
+  width: inherit;
+  height: inherit;
+  background: #121212eb;
+  display: flex;
+  flex-direction: column;
+}
+
+.list {
+  list-style: none;
+  padding: 3em 1rem 0;
+  font-family: var(--montserrat);
+  font-size: 1.1rem;
+}
+
+.element {
+  margin: 12px 0;
+  background: #000;
+  border: 1px solid var(--beige);
+  border-radius: 14px;
+  width: 80%;
+  position: relative;
+
+  &::after {
+    content: attr(content);
+    position: absolute;
+    top: 0;
+    right: -30px;
+    font-size: 1.7rem;
+    line-height: 1.9rem;
+    color: var(--beige);
+  }
+}
+
+.link {
+  display: block;
+  padding: 4px 10px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.image {
+  margin: auto;
+  width: 57%;
+  opacity: 0;
+  transition: opacity 1700ms ease-out;
+  
+  &_open {
+    opacity: 1;
+  }
+}
