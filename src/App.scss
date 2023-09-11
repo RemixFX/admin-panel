@@ -1,0 +1,18 @@
+@use './index.scss';
+
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 320px;
+  max-width: var(--mobile-width);
+  min-height: 100vh;
+  margin: auto;
+  padding: 1rem;
+
+
+  @include index.desktop {
+    max-width: var(--desktop-width);
+    scroll-padding-top: 85px;
+  }
+}

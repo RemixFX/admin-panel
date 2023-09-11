@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans&family=Montserrat&display=swap');
+
+$breakpoint--mobile: 640px;
+
+@mixin desktop {
+  @media (min-width: ($breakpoint--mobile + 1)) {
+    @content
+  }
+};
+
+@mixin mobile {
+  @media (max-width: ($breakpoint--mobile)) {
+    @content
+  }
+};
+
+
+:root {
+  font-family: 'Fira Sans', sans-serif;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  
+  --mobile-width: 412px;
+  --desktop-width: 1280px;
+  --yellow: #f3cb38;
+  --black: #19181e;
+  --beige: #be9877;
+  --montserrat: 'Montserrat', sans-serif;
+  --error: #ff4949;
+  
+}
+
+body {
+  margin: 0;
+  color: #fff;
+  background: var(--black);
+  box-sizing: border-box;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
