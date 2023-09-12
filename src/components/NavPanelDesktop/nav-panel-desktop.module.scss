@@ -3,12 +3,12 @@
 .navigation {
   display: none;
   visibility: hidden;
+  width: 100%;
   
   @include index.desktop {
     visibility: visible;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    width: 76%;
     font-family: var(--montserrat);
     font-size: 1.1rem;
     row-gap: 9px;

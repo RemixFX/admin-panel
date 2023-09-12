@@ -3,9 +3,12 @@ import Header from '../../components/Header/header'
 
 export default function Root() {
   return (
-    <div className={styles.page}>
-      <Header/>
-    </div>
+    <>
+      <Header />
+      <section className={styles.content}>
+
+      </section>
+    </>
   )
 }
 

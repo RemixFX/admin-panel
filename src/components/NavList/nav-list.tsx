@@ -25,7 +25,7 @@ export default function NavList({ handleToggle, isOpen }: NavProps) {
       <ul className={styles.list}>
         {trail.map((style, index) => {
           const link = LINKS[index]
-          const isActive = pathname.startsWith(link.src) || (pathname === '/' && link.src === '/#services')
+          const isActive = pathname === link.src ? true : false
           return (
             <animated.li className={styles.element} style={style} key={index}
               content={isActive ? '●' : ''} >

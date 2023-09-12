@@ -1,7 +1,7 @@
 export const LINKS = [
   {
     name: 'Главная страница',
-    src: '/#'
+    src: '/'
   },
   {
     name: 'Календарь',

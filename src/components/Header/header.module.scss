@@ -10,8 +10,7 @@
 
 .container {
   @include index.desktop {
-    width: 24%;
-    flex-direction: column;
+    display: none;
   }
 }
 
@@ -31,9 +30,4 @@
 .title {
   font-size: 1.2rem;
   margin: 0;
-  display: block;
-
-  @include index.desktop {
-    display: none;
-  }
 }
