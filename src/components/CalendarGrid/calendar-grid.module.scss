@@ -1,0 +1,70 @@
+@use '../../index.scss';
+
+.frame {
+  width: 100%;
+  max-width: 980px;
+  border: 1px solid lightgrey;
+}
+
+.header {
+  font-size: 18px;
+  font-weight: bold;
+  padding: 10px 10px 5px 10px;
+  display: flex;
+  justify-content: space-between;
+  background-color: #5a648b;
+}
+
+.button {
+  cursor: pointer;
+  width: 11%;
+  font-size: 1.5rem;
+  line-height: 1.5rem;
+  background-color: #5a648b;
+  border: 1px solid #4b4b4b;
+  color: #fff;
+  box-shadow: 0 0 3px 1px #000000;
+  transition: all linear 100ms;
+
+  &:hover {
+    background: #465077;
+  }
+  
+  &:first-of-type:active {
+    text-shadow: -16px 0px 3px #fff;
+  }
+
+  &:last-of-type:active {
+    text-shadow: 16px 0px 3px #fff;
+  }
+}
+
+
+.container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cell {
+  width: calc(100% / 7);
+  max-height: 85px;
+  padding: 3%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+
+  @include index.desktop {
+    font-size: 1.2rem;
+  }
+}
+
+.today {
+  border: 1px solid #eee;
+}
+
+.selected {
+  background-color: var(--yellow);
+}
