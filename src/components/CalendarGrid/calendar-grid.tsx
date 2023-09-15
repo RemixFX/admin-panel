@@ -1,7 +1,14 @@
 import { useState, useEffect } from 'react'
 import styles from './calendar-grid.module.scss'
+import { useQuery } from '@apollo/client'
+import { getClosedDays } from '../../api/closedDays'
+import CalendarCell from '../CalendarCell/calendar-cell'
 
-export default function CalendarGrid({handleClickDate}: {handleClickDate(day: number): void}) {
+interface CalendarGridProps {
+  handleClickDate: (day: number) => void
+}
+
+export default function CalendarGrid({ handleClickDate }: CalendarGridProps) {
 
   const DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
   const DAYS_LEAP = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
@@ -15,6 +22,12 @@ export default function CalendarGrid({handleClickDate}: {handleClickDate(day: nu
   const [year, setYear] = useState(date.getFullYear())
   const [startDay, setStartDay] = useState(getStartDayOfMonth(date))
 
+  const { loading, error, data } = useQuery(getClosedDays, { variables: { month: month + 1 } })
+
+  const closedDays = data ? data.getClosedDaysForAdmin.map((item) => {
+    return new Date(Number(item.date)).getDate()
+  }) : []
+
   useEffect(() => {
     setDay(date.getDate())
     setMonth(date.getMonth())
@@ -23,7 +36,11 @@ export default function CalendarGrid({handleClickDate}: {handleClickDate(day: nu
   }, [date])
 
   function getStartDayOfMonth(date: Date) {
-    return new Date(date.getFullYear(), date.getMonth(), 1).getDay()
+    let dayOfWeek = new Date(date.getFullYear(), date.getMonth(), 1).getDay()
+    if (dayOfWeek === 0) {
+      dayOfWeek = 7
+    }
+    return dayOfWeek
   }
 
   function isLeapYear(year: number) {
@@ -34,8 +51,10 @@ export default function CalendarGrid({handleClickDate}: {handleClickDate(day: nu
   const daysOfMonth: null[] = Array(days[month] + (startDay - 1)).fill(null)
 
 
-  const handleClick = (day: number) => {
-    return handleClickDate(day)
+
+
+  if (loading) {
+    return <div>Loading...</div>
   }
 
   return (
@@ -53,19 +72,15 @@ export default function CalendarGrid({handleClickDate}: {handleClickDate(day: nu
             <strong>{d}</strong>
           </div>
         ))}
-        {daysOfMonth.map((_, index) => {
-          const d = index - (startDay - 2);
-          const isToday = (d === today.getDate() && month === today.getMonth()) ? true : false
-          /* const isSelected = d === day ? true : false */
-          return (
-            <div className={`${styles.cell} ${isToday && styles.today}`}
-              key={index}
-              onClick={() => handleClick(d)}
-            >
-              {d > 0 ? d : ''}
-            </div>
-          );
-        })}
+        {daysOfMonth.map((_, index) =>
+          <CalendarCell
+            key={index}
+            day={index - (startDay - 2)}
+            isToday={index - (startDay - 2) === today.getDate() && month === today.getMonth()}
+            closedDays={closedDays}
+            handleClickDate={handleClickDate}
+          />
+        )}
       </div>
     </div>
   )

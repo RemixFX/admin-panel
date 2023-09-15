@@ -1,0 +1,101 @@
+@use '../../index.scss';
+
+@keyframes open {
+  0% {
+    background: radial-gradient(circle, rgb(139 0 0) 32%, rgba(25,24,30,1) 61%);
+  }
+  50% {
+    opacity: 0;
+    background: inherit;
+  }
+  60% {
+    
+    background: radial-gradient(circle, rgb(245, 253, 245) 32%, rgba(25,24,30,1) 81%);
+    opacity: 1;
+  }
+  70% {
+    background: radial-gradient(circle, rgb(181, 255, 181) 32%, rgba(25,24,30,1) 91%);
+  }
+  80% {
+    background-size: 150%;
+    background: radial-gradient(circle, rgb(107, 253, 107) 32%, rgba(25,24,30,1) 71%);
+  }
+  90% {
+    background-size: 100%;
+    background: radial-gradient(circle, rgb(0, 202, 0) 32%, rgba(25,24,30,1) 61%);
+  }
+  100% {
+    opacity: 1;
+    background: radial-gradient(circle, rgb(1 139 0) 32%, rgba(25,24,30,1) 61%);
+  }
+}
+
+@keyframes close {
+  0% {
+    background: radial-gradient(circle, rgb(1 139 0) 32%, rgba(25,24,30,1) 61%);
+  }
+  50% {
+    opacity: 0;
+    background: inherit;
+  }
+  60% {
+    
+    background: radial-gradient(circle, rgb(253, 243, 243) 32%, rgba(25,24,30,1) 81%);
+    opacity: 1;
+  }
+  70% {
+    background: radial-gradient(circle, rgb(255, 207, 207) 32%, rgba(25,24,30,1) 91%);
+  }
+  80% {
+    background-size: 150%;
+    background: radial-gradient(circle, rgb(255, 101, 101) 32%, rgba(25,24,30,1) 71%);
+  }
+  90% {
+    background-size: 100%;
+    background: radial-gradient(circle, rgb(230, 0, 0) 32%, rgba(25,24,30,1) 61%);
+  }
+  100% {
+    opacity: 1;
+    background: radial-gradient(circle, rgb(139 0 0) 32%, rgba(25,24,30,1) 61%);
+  }
+}
+
+.cell {
+  width: calc(100% / 7);
+  max-height: 85px;
+  padding: 3%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+
+  @include index.desktop {
+    font-size: 1.2rem;
+    border: 1px solid #ffffff1f;
+
+    &:hover {
+      box-shadow: inset 0px 0px 20px 0px #000;
+    }
+  }
+}
+
+.inactive {
+  cursor: default;
+  pointer-events: none;
+  background: inherit !important; 
+}
+
+.open {
+  animation: open 700ms forwards ease-in;
+  background: radial-gradient(circle, rgb(1 139 0) 32%, rgba(25,24,30,1) 61%);
+}
+
+.closed {
+  animation: close 700ms forwards ease-in;
+  background: radial-gradient(circle, rgb(139 0 0) 32%, rgba(25,24,30,1) 61%);
+}
+
+.today {
+  border: 1px solid var(--yellow);
+}

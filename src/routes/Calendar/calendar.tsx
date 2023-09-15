@@ -4,7 +4,6 @@ import styles from './calendar.module.scss'
 
 export default function Calendar() {
 
-
   const handleClickDate = (day: number) => {
     console.log(day)
   }
@@ -13,7 +12,9 @@ export default function Calendar() {
     <>
       <Header />
       <section className={styles.content}>
-        <CalendarGrid handleClickDate={handleClickDate}/>
+        <CalendarGrid
+          handleClickDate={handleClickDate}
+        />
       </section>
     </>
   )

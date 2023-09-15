@@ -39,7 +39,6 @@
   }
 }
 
-
 .container {
   width: 100%;
   display: flex;
@@ -54,17 +53,11 @@
   align-items: center;
   justify-content: center;
   font-size: 1rem;
-  cursor: pointer;
 
   @include index.desktop {
     font-size: 1.2rem;
+    border: 1px solid #ffffff1f;
   }
 }
 
-.today {
-  border: 1px solid #eee;
-}
 
-.selected {
-  background-color: var(--yellow);
-}
