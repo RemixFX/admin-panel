@@ -22,7 +22,7 @@ export default function CalendarGrid({ handleClickDate }: CalendarGridProps) {
   const [year, setYear] = useState(date.getFullYear())
   const [startDay, setStartDay] = useState(getStartDayOfMonth(date))
 
-  const { loading, error, data } = useQuery(getClosedDays, { variables: { month: month + 1 } })
+  const { loading, data } = useQuery(getClosedDays, { variables: { month: month + 1 } })
 
   const closedDays = data ? data.getClosedDaysForAdmin.map((item) => {
     return new Date(Number(item.date)).getDate()
