@@ -1,6 +1,89 @@
+@use '../../index.scss';
+
+@keyframes highlight {
+  16% {
+    border-color: var(--error);
+  }
+  32% {
+    border-color: transparent;
+  }
+  48% {
+    border-color: var(--yellow);
+  }
+  64% {
+    border-color: transparent;
+  }
+  80% {
+    border-color: var(--error);
+  }
+  100% {
+    border-color: transparent;
+  }
+}
+
 .content {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 1rem;
+}
+
+.head_buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  margin-bottom: 35px;
+  width: 66%;
+  min-width: 280px;
+  max-width: 590px;
+  border: none;
+}
+
+.button {
+  width: 47%;
+  min-height: 33px;
+  background: var(--light-blue);
+  color: #fff;
+  font-family: inherit;
+  border: 3px solid transparent;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  cursor: pointer;
+
+  &_active {
+    border: 2px solid var(--yellow);
+  }
+
+  &_submit {
+    margin-top: 30px;
+    max-width: 277px;
+
+    &:disabled {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+  }
+
+  &_highlight {
+    animation: highlight 1800ms linear forwards;
+  }
+
+  @include index.desktop {
+    font-size: 1rem;
+    min-height: 40px;
+
+    &:hover {
+      background: #465077;
+    }
+  }
+}
+
+.notify {
+  margin-top: 20px;
+  color: var(--error);
+  font-size: 0.8rem;
+
+  @include index.desktop {
+    font-size: 0.9rem;
+  }
 }

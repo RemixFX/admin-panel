@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, ReactNode } from 'react'
 import styles from './calendar-grid.module.scss'
 import { useQuery } from '@apollo/client'
 import { getClosedDays } from '../../api/closedDays'
@@ -6,9 +6,12 @@ import CalendarCell from '../CalendarCell/calendar-cell'
 
 interface CalendarGridProps {
   handleClickDate: (day: number) => void
+  showNotify: () => void
+  IsModified: boolean
+  children: ReactNode
 }
 
-export default function CalendarGrid({ handleClickDate }: CalendarGridProps) {
+export default function CalendarGrid({ handleClickDate, showNotify, IsModified, children }: CalendarGridProps) {
 
   const DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
   const DAYS_LEAP = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
@@ -47,41 +50,57 @@ export default function CalendarGrid({ handleClickDate }: CalendarGridProps) {
     return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
   }
 
+  function setPrevMonth () {
+    if (IsModified) {
+      showNotify()
+      return
+    }
+    setDate(new Date(year, month - 1, day))
+  }
+  
+  function setNextMonth () {
+    if (IsModified) {
+      showNotify()
+      return
+    }
+    setDate(new Date(year, month + 1, day))
+  }
+
   const days: number[] = isLeapYear(date.getFullYear()) ? DAYS_LEAP : DAYS
   const daysOfMonth: null[] = Array(days[month] + (startDay - 1)).fill(null)
-
-
-
 
   if (loading) {
     return <div>Loading...</div>
   }
 
   return (
-    <div className={styles.frame}>
-      <div className={styles.header}>
-        <button className={styles.button} onClick={() => setDate(new Date(year, month - 1, day))}>&#10229;</button>
-        <div>
-          {MONTHS[month]} {year}
-        </div>
-        <button className={styles.button} onClick={() => setDate(new Date(year, month + 1, day))}>&#10230;</button>
-      </div>
-      <div className={styles.container}>
-        {DAYS_OF_THE_WEEK.map(d => (
-          <div className={styles.cell} key={d}>
-            <strong>{d}</strong>
+    <>
+      <div className={styles.frame}>
+        <div className={styles.header}>
+          <button className={styles.button} onClick={setPrevMonth}>&#10229;</button>
+          <div>
+            {MONTHS[month]} {year}
           </div>
-        ))}
-        {daysOfMonth.map((_, index) =>
-          <CalendarCell
-            key={index}
-            day={index - (startDay - 2)}
-            isToday={index - (startDay - 2) === today.getDate() && month === today.getMonth()}
-            closedDays={closedDays}
-            handleClickDate={handleClickDate}
-          />
-        )}
+          <button className={styles.button} onClick={setNextMonth}>&#10230;</button>
+        </div>
+        <div className={styles.container}>
+          {DAYS_OF_THE_WEEK.map(d => (
+            <div className={styles.cell} key={d}>
+              <strong>{d}</strong>
+            </div>
+          ))}
+          {daysOfMonth.map((_, index) =>
+            <CalendarCell
+              key={index}
+              day={index - (startDay - 2)}
+              isToday={index - (startDay - 2) === today.getDate() && month === today.getMonth()}
+              closedDays={closedDays}
+              handleClickDate={handleClickDate}
+            />
+          )}
+        </div>
       </div>
-    </div>
+      {children}
+    </>
   )
 }
