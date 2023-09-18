@@ -7,7 +7,7 @@ export default function Calendar() {
 
   const [activeButton, setActiveButton] = useState<string>('work-calendar')
   const [IsModified, setIsModified] = useState<boolean>(false)
-  const [notify, setNotify] = useState({message: false, highlight: false})
+  const [notify, setNotify] = useState({ message: false, highlight: false })
 
   const handleClickDate = (day: number) => {
     console.log(day)
@@ -15,8 +15,8 @@ export default function Calendar() {
   }
 
   const showNotify = () => {
-    setNotify({message: true, highlight: true})
-    setTimeout(() => setNotify({message: true, highlight: false}), 1800)
+    setNotify({ message: true, highlight: true })
+    setTimeout(() => setNotify({ message: true, highlight: false }), 1800)
   }
 
   const setActiveWorkCalendar = () => {
@@ -55,11 +55,14 @@ export default function Calendar() {
             handleClickDate={handleClickDate}
             showNotify={showNotify}
           >
-            <button className={`${styles.button} ${styles.button_submit} ${notify.highlight ? styles.button_highlight : ''}`}
+            <button className={`${styles.button} ${styles.button_submit}
+             ${notify.highlight ? styles.button_highlight : ''}`}
               disabled={!IsModified}>
               Сохранить изменения
             </button>
-            {notify.message && <p className={styles.notify}>Необходимо сохранить изменения на текущий месяц</p>}
+            {notify.message && <p className={styles.notify}>
+              Необходимо сохранить изменения на текущий месяц
+            </p>}
           </CalendarGrid>
           :
           <div>entries calendar</div>

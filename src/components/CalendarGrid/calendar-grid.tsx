@@ -3,6 +3,7 @@ import styles from './calendar-grid.module.scss'
 import { useQuery } from '@apollo/client'
 import { getClosedDays } from '../../api/closedDays'
 import CalendarCell from '../CalendarCell/calendar-cell'
+import Loader from '../Loader/loader'
 
 interface CalendarGridProps {
   handleClickDate: (day: number) => void
@@ -70,7 +71,7 @@ export default function CalendarGrid({ handleClickDate, showNotify, IsModified, 
   const daysOfMonth: null[] = Array(days[month] + (startDay - 1)).fill(null)
 
   if (loading) {
-    return <div>Loading...</div>
+    return <Loader/>
   }
 
   return (
