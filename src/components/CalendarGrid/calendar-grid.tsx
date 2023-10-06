@@ -1,18 +1,11 @@
-import { useState, useEffect, ReactNode } from 'react'
+import { useState, useEffect, useCallback, } from 'react'
 import styles from './calendar-grid.module.scss'
 import { useQuery } from '@apollo/client'
 import { getClosedDays } from '../../api/closedDays'
 import CalendarCell from '../CalendarCell/calendar-cell'
 import Loader from '../Loader/loader'
 
-interface CalendarGridProps {
-  handleClickDate: (day: number) => void
-  showNotify: () => void
-  IsModified: boolean
-  children: ReactNode
-}
-
-export default function CalendarGrid({ handleClickDate, showNotify, IsModified, children }: CalendarGridProps) {
+export default function CalendarGrid() {
 
   const DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
   const DAYS_LEAP = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
@@ -26,11 +19,7 @@ export default function CalendarGrid({ handleClickDate, showNotify, IsModified, 
   const [year, setYear] = useState(date.getFullYear())
   const [startDay, setStartDay] = useState(getStartDayOfMonth(date))
 
-  const { loading, data } = useQuery(getClosedDays, { variables: { month: month + 1 } })
-
-  const closedDays = data ? data.getClosedDaysForAdmin.map((item) => {
-    return new Date(Number(item.date)).getDate()
-  }) : []
+  const { loading, data } = useQuery(getClosedDays, { variables: { month: month + 1 }, fetchPolicy: 'network-only' })
 
   useEffect(() => {
     setDay(date.getDate())
@@ -51,38 +40,33 @@ export default function CalendarGrid({ handleClickDate, showNotify, IsModified, 
     return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
   }
 
-  function setPrevMonth () {
-    if (IsModified) {
-      showNotify()
-      return
-    }
-    setDate(new Date(year, month - 1, day))
-  }
-  
-  function setNextMonth () {
-    if (IsModified) {
-      showNotify()
-      return
-    }
-    setDate(new Date(year, month + 1, day))
-  }
-
   const days: number[] = isLeapYear(date.getFullYear()) ? DAYS_LEAP : DAYS
   const daysOfMonth: null[] = Array(days[month] + (startDay - 1)).fill(null)
 
+
+  const checkClosedDay = useCallback((day: number): boolean => {
+    if (!data) return false
+    return data.getClosedDaysForAdmin.some(item => new Date(Number(item.date)).getDate() === day)
+  }, [data])
+
+  const checkIdClosedDay = useCallback((day: number): string | undefined => {
+    if (!data) return undefined
+    return data.getClosedDaysForAdmin.find(item => new Date(Number(item.date)).getDate() === day)?.id
+  }, [data])
+
   if (loading) {
-    return <Loader/>
+    return <Loader />
   }
 
   return (
     <>
       <div className={styles.frame}>
         <div className={styles.header}>
-          <button className={styles.button} onClick={setPrevMonth}>&#10229;</button>
+          <button className={styles.button} onClick={() => setDate(new Date(year, month - 1, day))}>&#10229;</button>
           <div>
             {MONTHS[month]} {year}
           </div>
-          <button className={styles.button} onClick={setNextMonth}>&#10230;</button>
+          <button className={styles.button} onClick={() => setDate(new Date(year, month + 1, day))}>&#10230;</button>
         </div>
         <div className={styles.container}>
           {DAYS_OF_THE_WEEK.map(d => (
@@ -90,18 +74,23 @@ export default function CalendarGrid({ handleClickDate, showNotify, IsModified, 
               <strong>{d}</strong>
             </div>
           ))}
-          {daysOfMonth.map((_, index) =>
-            <CalendarCell
-              key={index}
-              day={index - (startDay - 2)}
-              isToday={index - (startDay - 2) === today.getDate() && month === today.getMonth()}
-              closedDays={closedDays}
-              handleClickDate={handleClickDate}
-            />
-          )}
+          {daysOfMonth.map((_, index) => {
+            const day = index - (startDay - 2)
+            return (
+              <CalendarCell
+                key={index}
+                dayProps={{
+                  day,
+                  monthOfDay: month,
+                  yearOfDay: year,
+                  id: checkIdClosedDay(day),
+                  isClosed: checkClosedDay(day),
+                  isToday: day === today.getDate() && month === today.getMonth()
+                }}
+              />)
+          })}
         </div>
       </div>
-      {children}
     </>
   )
 }
