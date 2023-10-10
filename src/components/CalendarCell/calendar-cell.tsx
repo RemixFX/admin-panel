@@ -16,13 +16,13 @@ interface CalendarCellProps {
 
 export default function CalendarCell({ dayProps }: CalendarCellProps) {
 
-  const [animationState, setAnimationState] = useState<null | string>(null)
+  const [animationState, setAnimationState] = useState<null | boolean>(null)
 
-  const [closeDay, { data: responseCloseDay, loading: closeLoading }] = useMutation(
+  const [closeDay, { data: responseCloseDay }] = useMutation(
     setClosedDay,
     { refetchQueries: [getClosedDays] }
   )
-  const [openDay, { data: responseOpenDay, loading: openLoading }] = useMutation(
+  const [openDay, { data: responseOpenDay }] = useMutation(
     setOpenDay,
     { refetchQueries: [getClosedDays] }
   )
@@ -43,23 +43,22 @@ export default function CalendarCell({ dayProps }: CalendarCellProps) {
     }
   }
 
-/* if (dayProps.day === 5) console.log(animationState, responseCloseDay?.setClosedDay.status, responseOpenDay?.deleteClosedDay.status )
-
   useEffect(() => {
-    if (responseCloseDay?.setClosedDay.status === 'closed' && dayProps.isClosed === false) {
-      setAnimationState('closed')
+    if (responseOpenDay?.deleteClosedDay.status && !dayProps.isClosed) {
+      setAnimationState(true)
     }
-    if (responseOpenDay?.deleteClosedDay.status === 'open' && dayProps.isClosed === true) {
-      setAnimationState('open')
+    if (responseCloseDay?.setClosedDay.status && dayProps.isClosed) {
+      setAnimationState(true)
     }
-  }, [dayProps.isClosed, responseCloseDay, responseOpenDay]) */
+  }, [dayProps.isClosed, responseCloseDay?.setClosedDay.status, responseOpenDay?.deleteClosedDay.status])
 
   return (
     <div className={`
     ${styles.cell}
     ${dayProps.isToday ? styles.today : ''}
     ${dayProps.isClosed ? styles.closed : styles.open}
-
+    ${(animationState && dayProps.isClosed) && styles.closed_animation}
+    ${(animationState && !dayProps.isClosed) && styles.open_animation}
     ${dayProps.day <= 0 ? styles.inactive : ''}
     `}
       onClick={handleClick}

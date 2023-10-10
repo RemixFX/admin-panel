@@ -60,17 +60,17 @@
 
 .open {
   background: radial-gradient(circle, rgb(1 139 0) 39%, rgba(25, 24, 30, 1) 43%);
-animation: open 700ms forwards ease-in;
+
   &_animation {
-    
+    animation: open 700ms forwards ease-in;
   }
 }
 
 .closed {
   background: radial-gradient(circle, rgb(139 0 0) 39%, rgba(25, 24, 30, 1) 43%);
-animation: close 700ms forwards ease-in;
+
   &_animation {
-    
+    animation: close 700ms forwards ease-in;
   }
 }
 
