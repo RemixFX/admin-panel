@@ -19,7 +19,7 @@ export default function CalendarGrid() {
   const [year, setYear] = useState(date.getFullYear())
   const [startDay, setStartDay] = useState(getStartDayOfMonth(date))
 
-  const { loading, data } = useQuery(getClosedDays, { variables: { month: month + 1 }, fetchPolicy: 'network-only' })
+  const { loading, data, error } = useQuery(getClosedDays, { variables: { month: month + 1 }, fetchPolicy: 'network-only' })
 
   useEffect(() => {
     setDay(date.getDate())
@@ -60,7 +60,7 @@ export default function CalendarGrid() {
 
   return (
     <>
-      <div className={styles.frame}>
+      <div className={`${styles.frame} ${error ? styles.frame_error : ''}`}>
         <div className={styles.header}>
           <button className={styles.button} onClick={() => setDate(new Date(year, month - 1, day))}>&#10229;</button>
           <div>
@@ -91,6 +91,9 @@ export default function CalendarGrid() {
           })}
         </div>
       </div>
+      {error && <div className={`${styles.frame} ${styles.error}`}>
+        Не удалось получить данные с сервера
+      </div>}
     </>
   )
 }

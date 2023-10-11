@@ -16,13 +16,13 @@ interface CalendarCellProps {
 
 export default function CalendarCell({ dayProps }: CalendarCellProps) {
 
-  const [animationState, setAnimationState] = useState<null | boolean>(null)
+  const [animationState, setAnimationState] = useState<boolean>(false)
 
-  const [closeDay, { data: responseCloseDay }] = useMutation(
+  const [closeDay, { data: responseCloseDay, loading: loadingCloseDay, error: errorCloseDay }] = useMutation(
     setClosedDay,
     { refetchQueries: [getClosedDays] }
   )
-  const [openDay, { data: responseOpenDay }] = useMutation(
+  const [openDay, { data: responseOpenDay, loading: loadingOpenDay, error: errorOpenDay }] = useMutation(
     setOpenDay,
     { refetchQueries: [getClosedDays] }
   )
@@ -52,6 +52,7 @@ export default function CalendarCell({ dayProps }: CalendarCellProps) {
     }
   }, [dayProps.isClosed, responseCloseDay?.setClosedDay.status, responseOpenDay?.deleteClosedDay.status])
 
+
   return (
     <div className={`
     ${styles.cell}
@@ -60,10 +61,12 @@ export default function CalendarCell({ dayProps }: CalendarCellProps) {
     ${(animationState && dayProps.isClosed) && styles.closed_animation}
     ${(animationState && !dayProps.isClosed) && styles.open_animation}
     ${dayProps.day <= 0 ? styles.inactive : ''}
+    ${(errorCloseDay || errorOpenDay) && styles.error}
     `}
       onClick={handleClick}
     >
       {dayProps.day > 0 ? dayProps.day : ''}
+      {(loadingCloseDay || loadingOpenDay) && <div className={styles.day}></div>}
     </div>
   )
 }
